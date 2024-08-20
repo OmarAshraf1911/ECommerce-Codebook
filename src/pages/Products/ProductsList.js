@@ -1,4 +1,4 @@
-import { ProductCard } from "../../components/Elements/ProductCard";
+import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
 import { useState, useEffect } from "react";
 
