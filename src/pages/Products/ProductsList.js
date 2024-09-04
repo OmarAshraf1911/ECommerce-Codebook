@@ -1,18 +1,29 @@
 import { ProductCard } from "../../components";
 import { FilterBar } from "./components/FilterBar";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useTitle } from "../../hooks/useTitle";
+import { useFilter } from "../../context";
 
 export const ProductsList = () => {
+  const { products, initialProductList } = useFilter();
   const [show, setShow] = useState(false);
-  const [products, setProducts] = useState([]);
+  const search = useLocation().search;
+  const searchTerm = new URLSearchParams(search).get("q");
+  useTitle("eBooks Collection");
+
   useEffect(() => {
     async function fetchProducts() {
-      const response = await fetch("http://localhost:8000/products");
+      const response = await fetch(
+        `http://localhost:8000/products?name_like=${
+          searchTerm ? searchTerm : ""
+        }`
+      );
       const data = await response.json();
-      setProducts(data);
+      initialProductList(data);
     }
     fetchProducts();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <main>
